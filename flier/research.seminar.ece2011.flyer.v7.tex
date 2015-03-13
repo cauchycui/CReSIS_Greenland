@@ -1,0 +1,112 @@
+    \documentclass[12pt]{article}
+
+% If you just want to change part of the text, use
+%{\fontsize{11pt}{12pt}\selectfont text here}
+
+
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.eps,.ps,.tif,.gif,.bmp,.jpg}
+
+\newcommand{\mycaption}[2]{\parbox{\linewidth}{\fontsize{9pt}{9pt}\selectfont{\bf Figure #1. } #2}}
+
+\newcommand{\mycaptext}[2]{\parbox{\linewidth}{\fontsize{9pt}{9pt}\selectfont{\bf #1 } #2}}
+
+\include{defont2}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\linespread{0.9}
+%\linespread{1.5}
+
+
+
+\makeatletter
+\renewcommand \thefigure
+     {\@arabic\c@figure}
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{\fontsize{9pt}{10pt}\selectfont{\bf#1:} #2}%
+  \ifdim \wd\@tempboxa >\hsize
+    {\fontsize{9pt}{10pt}\selectfont{\bf #1:} #2}\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+\makeatother
+
+
+%\setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
+\addtolength{\leftmargin}{2mm}
+%\setlength{\parindent}{2mm}
+%\setlength{\textheight}{224mm}
+%\setlength{\topmargin}{-2mm}
+%\setlength{\textwidth}{156mm}
+%\setlength{\oddsidemargin}{3mm}
+%\addtolength{\textheight}{8mm} 
+%\addtolength{\topmargin}{-4mm}
+\setlength{\itemsep}{0.1em}
+
+ \begin{document}
+
+ NEW COURSE FOR SPRING 2011 !!!
+ 
+ {\ittv   Undergraduate Research Seminar:}\nl
+{\fontsize{14pt}{14pt}\selectfont {\bftv Remote Sensing, Signal Processing and Spatial Data Analysis\nl
+(ECEN 4004, M/W 3:30-4:45  in ECCR 137, 3 credit hours)\nl
+%{\bf Spatial Statistical Analysis and Signal Processing
+% of Airborne and Satellite Remote-Sensing Data ---
+% Engineering Perspectives and Science Applications (ECEN 4004, M/W 4:00-5:30) \nl
+Faculty: Dr. Ute Herzfeld, Associate Research Professor, ECEE }}
+
+\ss
+{\bftv Explore new topics like a research team:}\nl
+-- remote sensing of the environment\nl
+-- Earth observation technology\nl
+-- passive and active microwave\nl
+-- spatial data analysis\nl
+-- signal processing\nl
+-- image analysis, interpolation and extrapolation\nl
+-- new technology for observations from satellites, manned and unmanned aircraft\nl
+-- instrument and survey design\nl
+-- fascinating applications: Greenland and Antarctica, ice sheets, oceans, climate change, \nl
+ \~~~~~ forests,
+      ecology, exploration and mining,......
+
+{\bftv Things to know:}\nl
+--  course  style will be centered on research, problem-solving and skill development\nl
+-- you need not have background in remote sensing or spatial statistics.\nl
+-- course counts as technical or general elective\nl
+-- learn skills that prepare for a job at CU and in the professional world
+
+% For example: Which data situation would require interpolation? Which mathematical tool can I use to 
+% solve this problem?
+%How do I find existing solutions, or can I design my own? 
+
+{\bftv WHO?  UNDERGRADUATES}\nl 
+-- in: ECEE, AES,...all engineering majors, (applied) mathematics, computer sciences, physics,
+ \~~~ physical sciences including PAOS, geology, geography, environmental sciences, glaciology, 
+  \~~~ geophysics, ecology and hydrology\nl
+-- enthusiasm and interest are more important than specific course background\nl
+-- you need: about 15 credit hours towards your degree (such as basic engineering, maths,  \~~~ computer fitness, and/or science)
+%-- contact Ute.Herzfeld@colorado.edu (questions? prerequisites?)\nl
+
+{\bftv Assessments:}\nl
+ homeworks and a  special project on a topic of your choice (1 or 2 students per project)
+
+{\bftv more info?} http://cires.colorado.edu/~herzfeld/utecourses.html\\
+%http://ecee.colorado.edu/fac\_staff/personnel\_pages/herzfeld.html
+-- contact Ute.Herzfeld@colorado.edu (questions? prerequisites?)
+
+{\bftv Instructor:}  Ute Herzfeld is an Associate Research Professor at ECEE, a Senior Research Scientist  at the Cooperative Institute for Research in Environmental Sciences (CIRES) and an Affiliated Professor  in Applied Mathematics. Current research interests include
+mathematical concepts in geophysics, cryospheric sciences,  ecology, oceanography and remote sensing,
+spatial complexity,  and development of instrumentation for spatial Earth observation (ICESat-2, CryoSat, and UASs).
+
+\end{document}
+
+
+
+
+
+
+

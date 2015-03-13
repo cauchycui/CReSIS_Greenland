@@ -1,0 +1,174 @@
+function compare(varargin)
+if size(varargin,2)<13
+disp('Interactive mode enabled, exit with ctrl+c.')
+disp(' ')
+disp('Enter the first filename--the full path if the file does not')
+filename1=input('share a directory with compare.m: ', 's');
+disp(' ')
+filename2=input ('Enter the second filename: ', 's');
+scaling=CPOR(filename1, 'label');
+CPOR(filename2, 'label', scaling);
+disp(' ')
+tracks=input('Enter the tracks to compare: ');
+graphtype=input('Choose linearization of values, sqrt, or log: ', 's');
+close all
+[scaling, datamatrix1, args1, trackpoints1]=CPOR(filename1, ' ', 'default', tracks(:, 1).', graphtype, 1);
+[scaling, datamatrix2, args2, trackpoints2]=CPOR(filename2, ' ', scaling, tracks(:, 2).', graphtype, 'compare', 0, [.6 .2 .2], [0 .4 .2], [.1 .3 .5]);
+%Here the subtraction of roughness values is carried out
+%m=1;
+hold on
+labelcount=0;
+differencecount=0;
+differencematrix=zeros(size(datamatrix1));
+for m=1:args1
+    data1=datamatrix1(trackpoints1(m, 1):trackpoints1(m, 2),:);
+    data2=datamatrix2(trackpoints2(m, 1):trackpoints2(m, 2),:);
+    shortestdistance=inf;
+    differencecount=differencecount+1;
+    for o=1:size(data2,1)
+        for n=1:size(data1,1)
+            distanceold=shortestdistance;
+            shortestdistance=sqrt((data1(n,1)-data2(o,1))^2+...
+                (data1(n,2)-data2(o,2))^2);
+            if distanceold>shortestdistance
+                row1=n;
+                row2=o;
+                differencematrix(differencecount, 1:2)=datamatrix1(n, 1:2);
+                differencematrix(differencecount, 3)=datamatrix1(n, 3)-datamatrix2(o,3);
+            else
+                shortestdistance=distanceold;
+            end
+        end
+    end
+    i1=row1;
+    i2=row2;
+    distanceold1=180;
+    distanceold2=180;
+    testcount=0;
+    %right now distance tolerances are specific to icesat data--will not
+    %initial distances should be set to specific satellite spacings
+    while i1<size(data1,1) && i2<size(data2, 1)
+        i1=i1+1;
+        i2=i2+1;
+        testcount=testcount+1;
+        distance1=sqrt((data1(i1, 1)-data1(i1-1,1))^2+...
+            (data1(i1, 2)-data1(i1-1,2))^2);
+        distance2=sqrt((data2(i2, 1)-data2(i2-1,1))^2+...
+            (data2(i2, 2)-data2(i2-1,2))^2);
+        %This fixes desynchronization due to data loss
+        if distance1>1.5*distanceold1
+            shortestdistance=distance1;   %an arbitrarily large distance
+            for n=i2:size(data2,1)
+                distanceold=shortestdistance;
+                shortestdistance=sqrt((data1(i1,1)-data2(n,1))^2+...
+                (data1(i1,2)-data2(n,2))^2);
+                if distanceold>shortestdistance
+                    i2=n;
+                else
+                    shortestdistance=distanceold;
+                end
+            end
+        else
+            distanceold1=distance1;
+        end
+        %This fixes desynchronization due to data loss
+        if distance2>1.5*distanceold2
+            shortestdistance=distance2;   %an arbitrarily large distance
+            for n=i1:size(data1,1)
+                distanceold=shortestdistance;
+                shortestdistance=sqrt((data1(n,1)-data2(i2,1))^2+...
+                (data1(n,2)-data2(i2,2))^2);
+                if distanceold>shortestdistance
+                    i1=n;
+                else
+                    shortestdistance=distanceold;
+                end
+            end
+        else
+            distanceold2=distance2;
+        end
+        %if testcount==50
+            %testcount=0;
+            %labelcount=labelcount+1;
+         %plot(data1(i1, 1), data1(i1, 2), 'bx')
+         %text(data1(i1, 1), data1(i1, 2), [num2str(labelcount) 'line 1']);
+         %plot(data2(i2, 1), data2(i2, 2), 'bx')
+         %text(data2(i2, 1), data2(i2, 2), [num2str(labelcount) 'line 2']);
+        %end
+differencecount=differencecount+1;
+differencematrix(differencecount, 1:2)=datamatrix1(i1, 1:2);
+differencematrix(differencecount, 3)=datamatrix1(i1, 3)-datamatrix2(i2,3);
+    end
+    i1=row1;
+    i2=row2;
+    testcount=0;
+    while i1>1 && i2>1
+        testcount=testcount+1;
+        i1=i1-1;
+        i2=i2-1;
+        distance1=sqrt((data1(i1+1, 1)-data1(i1,1))^2+...
+            (data1(i1+1, 2)-data1(i1,2))^2);
+        distance2=sqrt((data2(i2+1, 1)-data2(i2,1))^2+...
+            (data2(i2+1, 2)-data2(i2,2))^2);
+        %This fixes desynchronization due to data loss
+        if distance1>1.5*distanceold1
+            shortestdistance=distance1;   %an arbitrarily large distance
+            for n=1:i2
+                distanceold=shortestdistance;
+                shortestdistance=sqrt((data1(i1,1)-data2(n,1))^2+...
+                (data1(i1,2)-data2(n,2))^2);
+                if distanceold>shortestdistance
+                    i2=n;
+                else
+                    shortestdistance=distanceold;
+                end
+            end
+        else
+            distanceold1=distance1;
+        end
+        %This fixes desynchronization due to data loss
+        if distance2>1.5*distanceold2
+            shortestdistance=distance2;   %an arbitrarily large distance
+            for n=1:i1
+                distanceold=shortestdistance;
+                shortestdistance=sqrt((data1(n,1)-data2(i2,1))^2+...
+                (data1(n,2)-data2(i2,2))^2);
+                if distanceold>shortestdistance
+                    i1=n;
+                else
+                    shortestdistance=distanceold;
+                end
+            end
+        else
+            distanceold2=distance2;
+        end
+        %if testcount==50
+            %testcount=0;
+            %labelcount=labelcount+1;
+         %plot(data1(i1, 1), data1(i1, 2), 'bx')
+         %text(data1(i1, 1), data1(i1, 2), ['line 1' num2str(labelcount)]);
+         %plot(data2(i2, 1), data2(i2, 2), 'bx')
+         %text(data2(i2, 1), data2(i2, 2), ['line 2' num2str(labelcount)]);
+        %end
+        
+    end
+differencecount=differencecount+1;
+differencematrix(differencecount, 1:2)=datamatrix1(i1, 1:2);
+differencematrix(differencecount, 3)=datamatrix1(i1, 3)-datamatrix2(i2,3);
+end
+differencematrix=differencematrix(1:differencecount,:);
+[dummy1, dummy2, dummy3, dummy4]=CPOR(differencematrix, 'Some title', scaling, 0, graphtype, 'compare2', 0, [0 0 1], [0 0 1], [1 0 0]);
+
+parameter=input('Change parameter? ', 's');
+while strcmp(parameter, 'no')~=1
+    if strcmp(parameter, 'scaling')
+        scaling=input('Enter scaling: ');
+    end
+    if strcmp(parameter, 'linearization')
+        graphtype=input('Enter linearization: ');
+    end
+[scaling, datamatrix1, args1, trackpoints1]=CPOR(filename1, ' ', scaling, tracks(:, 1).', graphtype, 1);
+[scaling, datamatrix2, args2, trackpoints2]=CPOR(filename2, ' ', scaling, tracks(:, 2).', graphtype, 'compare', 0, [.4 0 0], [0 .4 .2], [.1 .3 .5]);
+parameter=input('Change parameter? ', 's');
+end
+end

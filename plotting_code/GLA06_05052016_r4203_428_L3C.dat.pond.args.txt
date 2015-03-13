@@ -1,0 +1,11 @@
+filename: GLA06_05052016_r4203_428_L3C.dat.pond
+tracks: [ 1 3 5 8 10 ]
+linearization: values
+symmetry: 1
+title: default
+scaling: 0
+boundaries: [ 0.000 ]
+offset_color: [ 0.8000 0.0000 0.0000 ]
+jump_color: [ 0.0000 0.8000 0.4000 ]
+track_color: [ 0.2000 0.6000 1.0000 ]
+background_color: [ 1.0000 1.0000 1.0000 ]

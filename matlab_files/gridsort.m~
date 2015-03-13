@@ -1,0 +1,37 @@
+%arguments to be passed to function once this is a function
+data;
+%sorts all the data into 100x100m boxes lined up with the searise grid
+%NOTE: assumes searise coordinates mark lower left corner of a box
+startsize=100;
+%all quadrants assume indexing starts at 0; to avoid duplicate entries the
+%first row and column of quad3 will be empty as well as the first row of
+%quad4 and the first column of quad2
+quad1{startsize,startsize}=[];
+%quad1 contains all the 0s along its borders
+quad2{startsize,startsize}=[];
+%quad2 contains all 0s along along the 2-3 border
+quad3{startsize,startsize}=[];
+quad4{startsize,startsize=[];
+%quad4 contains all 0s along the 3-4 border
+for i=1:size(data,1)
+    x=floor(data(i,1)/100);
+    y=floor(data(i,2)/100);
+    if (x>=0)&&(y>=0)
+        if (x>=size(quad1,2))||(y>=size(quad1,1))
+            quad1{x+1,y+1}=[];
+        end
+        quad1{x+1,y+1}=[quad1{x+1,y+1}; data(i,:)];
+    elseif (x<0)&&(y>=0)
+        x=x*-1;
+        if (x>=size(quad2,2))||(y>=size(quad2,1))
+            quad2{x+1,y+1}=[];
+        end
+        quad2{x+1,y+1}=[quad2{x+1,y+1}; data(i,:)];
+    elseif (x<0)&&(y<0)
+        x=x*-1;
+        y
+        if (x>=size(quad2,2))||(y>=size(quad2,1))
+            quad2{x+1,y+1}=[];
+        end
+        quad2{x+1,y+1}=[quad2{x+1,y+1}; data(i,:)];
+end

@@ -1,0 +1,43 @@
+function printcresisyearkml(years, varargin)
+%PRINTCRESISYEARKML saves CRESIS tracks in Greenland as a txt file
+%years specifies which years to save, the second argument specifies the
+%output directory, and the third argument specifies the cresis portal
+%directory
+%might need to run curlftpfs data.cresis.ku.edu/data/rds/ /home/chenpa/cresisportal
+if nargin<3
+cresisroot='/home/chenpa/cresisportal/';
+else
+    cresisroot=varargin{2};
+end
+if nargin<2
+    outputroot='/data/phil/searise/cresisdata';
+else
+    outputroot=varargin{1};
+end
+if ischar(years)
+    years=str2num(years); %#ok<ST2NM>
+end
+for cur_year=years
+    str_cell=ls2strlist(['-d ' cresisroot num2str(cur_year) '_Greenland*']);
+    if iscell(str_cell)
+    for i=1:size(str_cell, 2)        
+        [~, dirname]=pathname(str_cell{i});
+        fid=fopen([outputroot 'temptxt.txt'], 'w+');
+        xdoc=xmlread([cresisroot dirname '/kml_good/Browse_' dirname '.kml']);
+        kmlstring=xmlwrite(xdoc);
+        parsekmlstr;
+        fclose(fid);
+        [status result]=system(['python /home/chenpa/documents/pythonscripts/deg2utm.py -f '...
+            outputroot 'temptxt.txt -o ' outputroot dirname '.utm']);
+        if status
+            error(['error--' result])
+        end
+        [status result]=system(['rm ' outputroot 'temptxt.txt']);
+        if status
+            error(['error--' result])
+        end
+        disp([outputroot dirname '.utm created'])
+    end
+    end
+    %j=j+1;
+end
