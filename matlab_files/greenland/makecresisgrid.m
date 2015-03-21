@@ -20,10 +20,10 @@ if isequal(result, '')
 end
 printcresisyearkml(years, [intermediatedir pstprefix], 1, dataloc);
 [~, ~]=system(['rm ' intermediatedir 'cresissort.tmp']);
-xmax=-inf;
-xmin=inf;
-ymax=-inf;
-ymin=inf;
+xmax =-inf;
+xmin =inf;
+ymax =-inf;  
+ymin =inf;
 for year=years
     filenames=ls2strlist([intermediatedir pstprefix num2str(year) '*.pst']);
     if iscell(filenames)
