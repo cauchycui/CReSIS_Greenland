@@ -81,10 +81,10 @@ end
 
 if wait_bar
     close(wbh)
-    etime=toc;
-    esecs=mod(etime, 60);
-    emins=mod(etime-esecs,3600)/60;
-    ehours=etime-esecs-emins*60;
+    etime  =toc;
+    esecs  =mod(etime, 60);
+    emins  =mod(etime-esecs,3600)/60;
+    ehours =etime-esecs-emins*60;
     disp(['Data parsed and copied from CRESIS portal in '...
         num2str(ehours) ' hours, ' num2str(emins) ' minutes, and ' num2str(esecs) ' seconds']);
 end
