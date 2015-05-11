@@ -1,4 +1,4 @@
-years=2011:2014;
+years=1993:2014;
 outputfile='/Users/harrycui/data/searise/all_cresis_griddata.txt';
 %a place to save intermediate files
 intermediatedir='/Users/harrycui/data/searise/';
@@ -10,7 +10,7 @@ dataloc='/Users/harrycui/cresisportal/';
 %applicable
 
 
-[status, result]=system(['ls ' dataloc]);
+[status, result]=system(['ls ' dataloc]); 
 if status
     error(['error--' result]);
 end
@@ -27,6 +27,10 @@ xmin =inf;
 ymax =-inf;  
 ymin =inf;
 for year=years
+    if strcmp(num2str(year),'1994') || strcmp(num2str(year),'2000') || strcmp(num2str(year),'2004')
+            continue
+        end
+       
     filenames=ls2strlist([intermediatedir pstprefix num2str(year) '*.pst']);
 %    celldisp(filenames);
     if iscell(filenames)
@@ -47,6 +51,7 @@ for year=years
         end
     end
 end
+
 if exist([intermediatedir 'cresissort.tmp'], 'file')
 fsortseadata([intermediatedir 'cresissort.tmp']);
 %avgsortedgriddata([intermediatedir 'cresissort.tmp'], [outputfile '.ydat'])
